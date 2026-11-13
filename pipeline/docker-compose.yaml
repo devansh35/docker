@@ -1,0 +1,30 @@
+name: taxi-pipeline
+
+services:
+  pgdatabase:
+    image: postgres:18
+    network_mode: host
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
+      POSTGRES_DB: ${POSTGRES_DB:-taxi}
+    volumes:
+      - taxi_postgres_data:/var/lib/postgresql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    network_mode: host
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-root}
+      PGADMIN_LISTEN_PORT: "8085"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  taxi_postgres_data:
+    name: taxi_postgres_data
+    external: true
+  pgadmin_data:
+    name: pgadmin_data
+    external: true
